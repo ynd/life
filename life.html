@@ -11,9 +11,9 @@
     	canvas { border: 1px solid black; }
     </style>
 	<script type="text/javascript">
-		var CELL_SIZE = 15;
+		var CELL_SIZE = 10;
 		
-		var universe = null;
+		var EDITING = false;
 		
 		function onMouseMove(e) {
 			var context = this.getContext("2d");
@@ -27,9 +27,12 @@
 			DrawCell(cellX, cellY, "black");
 		}
 		function onMouseUp(e) {
+			EDITING = false;
 			$("#universe").unbind("mousemove", onMouseMove);
 		}
-		function onMouseDown(e) {			
+		function onMouseDown(e) {
+			EDITING = true;
+					
 			var context = this.getContext("2d");
 			
 			var x = e.pageX - $(this).offset().left;
@@ -43,12 +46,10 @@
 			$("#universe").mousemove(onMouseMove);
 		}
 		
-		function RandomInt(max) {
-			return Math.round(max*Math.random());
-		}
-		
-		function IsLive(color) {
-			return color.r != 255 && color.g != 255 && color.b != 255;
+		function IsLive(pixels, x, y) {
+			var canvas = document.getElementById("universe");
+			var offset = y * canvas.height * 4 + x * 4;
+			return pixels[offset] == 0 && pixels[offset + 1] == 0 && pixels[offset + 2] == 0;
 		}
 		
 		function DrawCell(x, y, color) {
@@ -58,6 +59,10 @@
 		}
 		
 		function GameLoop() {
+			if (EDITING)  {
+				return;
+			}
+			
 			var canvas = document.getElementById("universe");
 			var pixels = canvas.getContext("2d").getImageData(0, 0, canvas.width, canvas.height).data;
 					
@@ -71,21 +76,20 @@
 								continue;
 							}
 							
-							if (IsLive(pixels[j * canvas.width + i])) {
+							if (IsLive(pixels, i, j)) {
 								neighbours += 1;
 							}
 						}
 					}
 					
-					if (IsLive(pixels[y * canvas.width + x])) {
+					if (IsLive(pixels, x, y)) {
 						if (neighbours < 2 || neighbours > 3) {
 							DrawCell(x, y, "white");
 						}
 					}
 					else {
-						var LIVE_COLOR = "rgb(" + RandomInt(255) + "," + RandomInt(255) + ", " + RandomInt(255) + ")";
 						if (neighbours == 3) {
-							DrawCell(x, y, LIVE_COLOR);
+							DrawCell(x, y, "black");
 						}
 					}
 				}
@@ -93,14 +97,9 @@
 		}
 		
 		$(document).ready(function() {
-			universe = new Array($("#universe").height() / CELL_SIZE);
-			for (var i = 0; i < universe.length; i++) {
-				universe[i] = new Array($("#universe").width() / CELL_SIZE);
-			}
-			
 			$("#universe").mouseup(onMouseUp);
 			$("#universe").mousedown(onMouseDown);
-			setInterval(GameLoop, 1000);
+			setInterval(GameLoop, 100);
 		});
     </script>
 	
