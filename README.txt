@@ -17,6 +17,7 @@ Technical requirements.
 - Button to reset the game.
 - Small time needed to go from the initial situation to stable organisms.
 - The cells of the organisms are big enough for you to see the patterns.
+- Generate a random pattern like http://www.ijourneyman.com/life/
 
 The page should contains information about the game of life.
 
@@ -24,3 +25,10 @@ The page should contains information about the game of life.
 - Common organisms and why they are special.
 - Reflexion of how the game of life relates to emergence of real life.
 - Include stories about self-organization.
+
+Domain objects
+--------------
+
+- Canvas
+- Rules
+- Cells
