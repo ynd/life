@@ -33,6 +33,8 @@
 			
 			var bigBangButton = document.getElementById("life-grid-1-big-bang");
 			
+			var refreshRate = 100;
+			
 			// Init
 			context.fillStyle = "white";
 			context.fillRect(0, 0, canvas.width, canvas.height);
@@ -53,7 +55,7 @@
 			});
 			$(canvas).mousedown(function (e) {
 				if (!isRunning) {
-					setInterval(ApplyGameLogic, 100);
+					setInterval(ApplyGameLogic, refreshRate);
 					isRunning = true;
 				}
 				
@@ -63,7 +65,7 @@
 			});
 			$(bigBangButton).click(function () {
 				if (!isRunning) {
-					setInterval(ApplyGameLogic, 100);
+					setInterval(ApplyGameLogic, refreshRate);
 					isRunning = true;
 				}
 				for (var x = 0; x < gridWidth; x++) {
