@@ -32,3 +32,10 @@ Domain objects
 - Canvas
 - Rules
 - Cells
+
+Roles
+-----
+
+- Input handling
+- Rendering
+- Game logic
